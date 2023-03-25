@@ -1,8 +1,20 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe("App", () => {
+  test("renders all form inputs", () => {
+    render(<App />);
+
+    const titleInput = screen.getByLabelText("Title");
+    expect(titleInput).toBeInTheDocument();
+
+    const descriptionInput = screen.getByLabelText("Description");
+    expect(descriptionInput).toBeInTheDocument();
+
+    const imageInput = screen.getByLabelText("Image");
+    expect(imageInput).toBeInTheDocument();
+
+    const saveButton = screen.getByRole("button", { name: "Save" });
+    expect(saveButton).toBeInTheDocument();
+  });
 });
