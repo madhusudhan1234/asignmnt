@@ -1,5 +1,6 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import Pagination from "./components/Pagination";
 import ImageService from "./services/ImageService";
 
 function App() {
@@ -9,13 +10,21 @@ function App() {
   const [preview, setPreview] = useState(null);
   const [images, setImages] = useState({});
 
-  useEffect(() => {
-    fetchImages();
-  }, []);
+  const [paginationInfo, setPaginationInfo] = useState({
+    page: 1,
+    pageSize: 1,
+  });
 
-  const fetchImages = async () => {
+  useEffect(() => {
+    fetchImages({
+      page: paginationInfo.page,
+      pageSize: paginationInfo.pageSize,
+    });
+  }, [paginationInfo]);
+
+  const fetchImages = async (params) => {
     try {
-      const res = await ImageService.get();
+      const res = await ImageService.get(params);
 
       setImages(res);
     } catch (error) {
@@ -47,6 +56,11 @@ function App() {
 
     try {
       await ImageService.create(formData);
+      await fetchImages({
+        page: paginationInfo.page,
+        pageSize: paginationInfo.pageSize,
+      });
+
       setTitle("");
       setDescription("");
       setImage(null);
@@ -194,6 +208,18 @@ function App() {
               </div>
             ))}
           </div>
+          {images?.paginationInfo && (
+            <Pagination
+              currentPage={images.paginationInfo.currentPage}
+              totalPages={images.paginationInfo.pages}
+              onPageChange={(pageNumber) =>
+                setPaginationInfo({
+                  page: pageNumber,
+                  pageSize: paginationInfo.pageSize,
+                })
+              }
+            />
+          )}
         </div>
       </div>
     </div>
