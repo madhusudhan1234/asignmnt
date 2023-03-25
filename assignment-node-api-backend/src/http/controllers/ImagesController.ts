@@ -9,9 +9,18 @@ const url = require("url");
 
 export class ImagesController {
   async getImages(req: Request, res: Response) {
+    const search = req.query.search?.toString();
+
     const builder = await AppDataSource.getRepository(Image)
       .createQueryBuilder()
       .orderBy("id", "DESC");
+
+    if (search) {
+      builder.where("LOWER(title) ILIKE :search", {
+        search: `%${search.toLowerCase()}%`,
+      });
+    }
+
     const { records: images, paginationInfo } = await Paginator.paginate(
       builder,
       req
