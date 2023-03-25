@@ -2,8 +2,8 @@ import { LIST_IMAGES } from "../constants/api";
 import Api from "./Api";
 
 class ImageService {
-  async get() {
-    const res = await Api.get(LIST_IMAGES);
+  async get(params) {
+    const res = await Api.get(LIST_IMAGES, params);
 
     return res.body;
   }
