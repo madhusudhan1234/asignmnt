@@ -5,6 +5,7 @@ import ImageService from "./services/ImageService";
 
 function App() {
   const [title, setTitle] = useState("");
+  const [searchText, setSearchText] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -12,7 +13,7 @@ function App() {
 
   const [paginationInfo, setPaginationInfo] = useState({
     page: 1,
-    pageSize: 1,
+    pageSize: 10,
   });
 
   useEffect(() => {
@@ -21,6 +22,17 @@ function App() {
       pageSize: paginationInfo.pageSize,
     });
   }, [paginationInfo]);
+
+  const handleSearch = (event) => {
+    const value = event.target.value;
+    setSearchText(value);
+
+    fetchImages({
+      page: searchText ? 1 : paginationInfo.page,
+      pageSize: paginationInfo.pageSize,
+      search: searchText ? `%${value.toLowerCase()}%` : null,
+    });
+  };
 
   const fetchImages = async (params) => {
     try {
@@ -59,6 +71,7 @@ function App() {
       await fetchImages({
         page: paginationInfo.page,
         pageSize: paginationInfo.pageSize,
+        fetch: "fresh",
       });
 
       setTitle("");
@@ -183,9 +196,33 @@ function App() {
 
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            List of Images
-          </h2>
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+              List of Images
+            </h2>
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search by title..."
+                className="block w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring focus:ring-indigo-200 focus:border-indigo-500 sm:text-sm"
+                value={searchText}
+                onChange={handleSearch}
+              />
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M15.314 14.686a8 8 0 111.414-1.414l4.292 4.292a1 1 0 01-1.414 1.414l-4.292-4.292zm-5.5 0a3.5 3.5 0 11-6.245-2.255A3.5 3.5 0 019.814 7.88a3.501 3.501 0 015.246 0 3.5 3.5 0 01-2.246 6.546z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {images?.data?.map((image) => (
