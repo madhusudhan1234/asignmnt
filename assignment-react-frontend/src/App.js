@@ -1,11 +1,27 @@
 import { PhotoIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ImageService from "./services/ImageService";
 
 function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [images, setImages] = useState({});
+
+  useEffect(() => {
+    fetchImages();
+  }, []);
+
+  const fetchImages = async () => {
+    try {
+      const res = await ImageService.get();
+
+      setImages(res);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -29,7 +45,15 @@ function App() {
     formData.append("description", description);
     formData.append("image", image);
 
-    // Call async method API to upload the image
+    try {
+      await ImageService.create(formData);
+      setTitle("");
+      setDescription("");
+      setImage(null);
+      setPreview(null);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -142,6 +166,36 @@ function App() {
           </button>
         </div>
       </form>
+
+      <div className="bg-white">
+        <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+            List of Images
+          </h2>
+
+          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {images?.data?.map((image) => (
+              <div key={image.id} className="group relative">
+                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
+                  <img
+                    src={image.image}
+                    alt={image.title}
+                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  />
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <h3 className="text-sm text-gray-700">{image.title}</h3>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {image.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

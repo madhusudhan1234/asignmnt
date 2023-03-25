@@ -41,7 +41,7 @@ export class ImagesController {
   async create(req: Request, res: Response): Promise<Response> {
     const imageData = req.body;
     imageData.image = req.file?.filename;
-
+    console.log("This is the body", imageData);
     const dto = new CreateImageDTO();
     Object.assign(dto, imageData);
 
