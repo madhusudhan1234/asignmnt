@@ -13,7 +13,7 @@ function App() {
 
   const [paginationInfo, setPaginationInfo] = useState({
     page: 1,
-    pageSize: 10,
+    pageSize: 4,
   });
 
   useEffect(() => {
@@ -67,11 +67,12 @@ function App() {
     formData.append("image", image);
 
     try {
-      await ImageService.create(formData);
+      const res = await ImageService.create(formData);
+
       await fetchImages({
         page: paginationInfo.page,
         pageSize: paginationInfo.pageSize,
-        fetch: "fresh",
+        new: res.data.id,
       });
 
       setTitle("");
@@ -225,6 +226,11 @@ function App() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+            {images && images.data && images.data.length < 1 && (
+              <p className="text-lg text-gray-800 leading-6 mb-4 border-l-4 border-blue-500 pl-2">
+                No Images Found! Please add some
+              </p>
+            )}
             {images?.data?.map((image) => (
               <div key={image.id} className="group relative">
                 <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
@@ -245,7 +251,7 @@ function App() {
               </div>
             ))}
           </div>
-          {images?.paginationInfo && (
+          {images?.paginationInfo && images?.paginationInfo.totalItems > 1 && (
             <Pagination
               currentPage={images.paginationInfo.currentPage}
               totalPages={images.paginationInfo.pages}
