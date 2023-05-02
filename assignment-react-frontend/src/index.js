@@ -1,13 +1,41 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import Dashboard from "./pages/dashboard/Index";
+import Home from "./pages/home/Index";
+import Login from "./pages/login/Index";
+import Product from "./pages/product/Index";
+import Subscribe from "./pages/subscribe/Index";
 import reportWebVitals from "./reportWebVitals";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    Component: Home,
+  },
+  {
+    path: "/products/:productid",
+    Component: Product,
+  },
+  {
+    path: "/login",
+    Component: Login,
+  },
+  {
+    path: "/subscribe",
+    Component: Subscribe,
+  },
+  {
+    path: "/dashboard",
+    Component: Dashboard,
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
