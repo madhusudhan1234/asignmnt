@@ -1,17 +1,22 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { IMAGES } from "../../constants/DBTable";
+import { SubCategory } from "./SubCategory";
 
 @Entity(IMAGES)
 export class Image {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false })
-  title: string;
-
-  @Column({ nullable: false })
-  description: string;
-
   @Column({ nullable: true })
-  image: string;
+  name: string;
+
+  @ManyToMany(() => SubCategory)
+  @JoinTable()
+  subcategories: SubCategory[];
 }
