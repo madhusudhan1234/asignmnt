@@ -39,7 +39,7 @@ export class FileUploader {
       storage: storage,
       limits: { fileSize: filesize },
       fileFilter,
-    }).single(fileFieldName);
+    }).array(fileFieldName);
 
     return upload;
   }

@@ -1,6 +1,8 @@
 import {
   Column,
   Entity,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
@@ -24,8 +26,10 @@ export class SubCategory {
   categoryId: string;
 
   @ManyToOne(() => Category, (category) => category.subcategories)
+  @JoinColumn({ name: "categoryId" })
   category: Category;
 
   @ManyToMany(() => Image, (image) => image.subcategories)
+  @JoinTable({ name: "subcategories_images_images" })
   images: Image[];
 }

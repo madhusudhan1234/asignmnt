@@ -1,10 +1,10 @@
-import { validate } from "class-validator";
 import { Request, Response } from "express";
 import { ResponseUtil } from "../../../utils/Response";
+import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Image } from "../../database/entities/Image";
-import { Paginator } from "../../database/Paginator";
-import { CreateImageDTO } from "../dtos/CreateImageDTO";
+import { ImageSubcategory } from "../../database/entities/ImageSubcategory";
+import { SubCategory } from "../../database/entities/SubCategory";
 const url = require("url");
 
 export class ImagesController {
@@ -48,26 +48,50 @@ export class ImagesController {
   }
 
   async create(req: Request, res: Response): Promise<Response> {
-    const imageData = req.body;
-    imageData.image = req.file?.filename;
+    const subcategoryId = req.body.subcategoryId;
 
-    const dto = new CreateImageDTO();
-    Object.assign(dto, imageData);
+    const subcategoryRepository = AppDataSource.getRepository(SubCategory);
+    const imageSubcategoryRepository =
+      AppDataSource.getRepository(ImageSubcategory);
+    const subcategory = await subcategoryRepository
+      .createQueryBuilder("subcategory")
+      .where("subcategory.id = :id", { id: subcategoryId })
+      .getOne();
 
-    const errors = await validate(dto);
-    if (errors.length > 0) {
-      return ResponseUtil.sendError(res, "Invalid data", 422, errors);
+    if (!subcategory) {
+      return res.status(404).json({ message: "Subcategory not found" });
     }
 
-    const repo = AppDataSource.getRepository(Image);
-    const image = repo.create(imageData);
+    const images = req.files as Express.Multer.File[];
 
-    await repo.save(image);
+    if (!images || images.length === 0) {
+      return res.status(400).json({ message: "No images provided" });
+    }
+
+    const imageRepository = AppDataSource.getRepository(Image);
+
+    const imageEntities = images.map((image) =>
+      imageRepository.create({
+        name: image.filename,
+        url: `http://localhost:3000/images/${image.filename}`,
+      })
+    );
+
+    const savedImages = await imageRepository.save(imageEntities);
+    await Promise.all(
+      savedImages.map(async (image) => {
+        const imageSubcategory = imageSubcategoryRepository.create({
+          imageId: image.id,
+          subcategoryId: subcategoryId,
+        });
+        await imageSubcategoryRepository.save(imageSubcategory);
+      })
+    );
 
     return ResponseUtil.sendResponse(
       res,
       "Successfully added new image",
-      image,
+      [],
       200
     );
   }

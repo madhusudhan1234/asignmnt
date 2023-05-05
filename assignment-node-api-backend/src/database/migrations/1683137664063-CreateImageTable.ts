@@ -4,12 +4,17 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
+import {
+  IMAGES,
+  IMAGE_SUBCATEGORY,
+  SUBCATEGORIES,
+} from "../../constants/DBTable";
 
 export class CreateImageTable1683137664063 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "image",
+        name: IMAGES,
         columns: [
           {
             name: "id",
@@ -24,13 +29,18 @@ export class CreateImageTable1683137664063 implements MigrationInterface {
             length: "255",
             isNullable: false,
           },
+          {
+            name: "url",
+            type: "text",
+            isNullable: false,
+          },
         ],
       })
     );
 
     await queryRunner.createTable(
       new Table({
-        name: "image_subcategory",
+        name: IMAGE_SUBCATEGORY,
         columns: [
           {
             name: "id",
@@ -52,30 +62,30 @@ export class CreateImageTable1683137664063 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "image_subcategory",
+      IMAGE_SUBCATEGORY,
       new TableForeignKey({
         columnNames: ["imageId"],
         referencedColumnNames: ["id"],
-        referencedTableName: "image",
+        referencedTableName: IMAGES,
         onDelete: "CASCADE",
       })
     );
 
     await queryRunner.createForeignKey(
-      "image_subcategory",
+      IMAGE_SUBCATEGORY,
       new TableForeignKey({
         columnNames: ["subcategoryId"],
         referencedColumnNames: ["id"],
-        referencedTableName: "subcategory",
+        referencedTableName: SUBCATEGORIES,
         onDelete: "CASCADE",
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey("image_subcategory", "subcategoryId");
-    await queryRunner.dropForeignKey("image_subcategory", "imageId");
-    await queryRunner.dropTable("image_subcategory");
-    await queryRunner.dropTable("image");
+    await queryRunner.dropForeignKey(IMAGE_SUBCATEGORY, "subcategoryId");
+    await queryRunner.dropForeignKey(IMAGE_SUBCATEGORY, "imageId");
+    await queryRunner.dropTable(IMAGE_SUBCATEGORY);
+    await queryRunner.dropTable(IMAGES);
   }
 }

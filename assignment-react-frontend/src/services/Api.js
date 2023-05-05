@@ -29,10 +29,10 @@ class Api {
     }
   }
 
-  async post(resource, params = {}) {
+  async post(resource, params = {}, contentType = "multipart/form-data") {
     let config = {
       headers: {
-        "Content-Type": "multipart/form-data",
+        "Content-Type": contentType,
       },
     };
 
