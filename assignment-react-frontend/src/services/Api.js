@@ -49,6 +49,7 @@ class Api {
   }
 
   errorResponse(error) {
+    console.log(error);
     throw this.response(error.response);
   }
 

@@ -58,6 +58,7 @@ export class ImagesController {
       .where("subcategory.id = :id", { id: subcategoryId })
       .getOne();
 
+    console.log(subcategory, req.files);
     if (!subcategory) {
       return res.status(404).json({ message: "Subcategory not found" });
     }
@@ -73,7 +74,7 @@ export class ImagesController {
     const imageEntities = images.map((image) =>
       imageRepository.create({
         name: image.filename,
-        url: `http://localhost:3000/images/${image.filename}`,
+        url: `http://localhost:3000/uploads/images/${image.filename}`,
       })
     );
 
