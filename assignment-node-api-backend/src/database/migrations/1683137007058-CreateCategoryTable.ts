@@ -1,10 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { CATEGORIES } from "../../constants/DBTable";
 
 export class CreateCategoryTable1683137007058 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "category",
+        name: CATEGORIES,
         columns: [
           {
             name: "id",
@@ -29,6 +30,6 @@ export class CreateCategoryTable1683137007058 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("category");
+    await queryRunner.dropTable(CATEGORIES);
   }
 }

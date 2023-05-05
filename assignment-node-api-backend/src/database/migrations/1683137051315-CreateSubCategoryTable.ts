@@ -4,12 +4,13 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
+import { CATEGORIES, SUBCATEGORIES } from "../../constants/DBTable";
 
 export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: "subcategory",
+        name: SUBCATEGORIES,
         columns: [
           {
             name: "id",
@@ -37,18 +38,18 @@ export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      "subcategory",
+      SUBCATEGORIES,
       new TableForeignKey({
         columnNames: ["categoryId"],
         referencedColumnNames: ["id"],
-        referencedTableName: "category",
+        referencedTableName: CATEGORIES,
         onDelete: "CASCADE",
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey("subcategory", "categoryId");
-    await queryRunner.dropTable("subcategory");
+    await queryRunner.dropForeignKey(SUBCATEGORIES, "categoryId");
+    await queryRunner.dropTable(SUBCATEGORIES);
   }
 }
