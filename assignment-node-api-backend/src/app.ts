@@ -7,6 +7,7 @@ import { ErrorHandler } from "./http/middlewares/ErrorHandler";
 import categoryRoute from "./routes/categories";
 import imagesRoute from "./routes/images";
 import subCategoryRoute from "./routes/subcategories";
+import subscriberRoute from "./routes/subscribers";
 
 const app: Express = express();
 
@@ -23,6 +24,7 @@ app.use("/uploads", express.static(path.join(__dirname, "..", "uploads")));
 app.use("/images", imagesRoute);
 app.use("/categories", categoryRoute);
 app.use("/subcategories", subCategoryRoute);
+app.use("/subscribers", subscriberRoute);
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({
     success: false,

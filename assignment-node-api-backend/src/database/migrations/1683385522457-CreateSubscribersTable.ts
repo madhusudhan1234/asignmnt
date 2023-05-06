@@ -1,26 +1,37 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
-import { CATEGORIES } from "../../constants/DBTable";
+import { SUBSCRIBERS } from "../../constants/DBTable";
 
-export class CreateCategoryTable1683137007058 implements MigrationInterface {
+export class CreateSubscribersTable1683385522457 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: CATEGORIES,
+        name: SUBSCRIBERS,
         columns: [
           {
             name: "id",
-            type: "uuid",
+            type: "int",
+            isGenerated: true,
             isPrimary: true,
-            default: "uuid_generate_v4()",
+            generationStrategy: "increment",
           },
           {
-            name: "title",
+            name: "name",
             type: "varchar",
-            length: "255",
-            isNullable: false,
           },
           {
-            name: "description",
+            name: "email",
+            type: "varchar",
+          },
+          {
+            name: "country",
+            type: "varchar",
+          },
+          {
+            name: "phone",
+            type: "varchar",
+          },
+          {
+            name: "message",
             type: "text",
             isNullable: true,
           },
@@ -42,6 +53,6 @@ export class CreateCategoryTable1683137007058 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable(CATEGORIES);
+    await queryRunner.dropTable(SUBSCRIBERS);
   }
 }

@@ -10,7 +10,7 @@ interface PaginationInfo {
 export class Paginator {
   static async paginate(queryBuilder, req) {
     let page = Number(req.query.page) || 1;
-    let pageSize = Number(req.query.pageSize) || 10;
+    let pageSize = Number(req.query.pageSize) || 100;
     const offset = (page - 1) * pageSize;
 
     const records = await queryBuilder.skip(offset).take(pageSize).getMany();

@@ -10,7 +10,7 @@ export default function Index({ items }) {
         {items.map((item) => {
           return item.name == "Home" ? (
             <li key={item.id}>
-              <a href="#" className="block transition hover:text-gray-700">
+              <span className="block transition hover:text-gray-700">
                 <span className="sr-only"> Home </span>
 
                 <svg
@@ -27,7 +27,7 @@ export default function Index({ items }) {
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
-              </a>
+              </span>
             </li>
           ) : (
             <Fragment>
@@ -46,10 +46,10 @@ export default function Index({ items }) {
                 </svg>
               </li>
               <li key={item.id + 1}>
-                <a href="#" className="block transition hover:text-gray-700">
+                <span className="block transition hover:text-gray-700">
                   {" "}
                   {item.name}{" "}
-                </a>
+                </span>
               </li>
             </Fragment>
           );

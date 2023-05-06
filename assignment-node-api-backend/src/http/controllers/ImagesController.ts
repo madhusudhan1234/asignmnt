@@ -58,7 +58,6 @@ export class ImagesController {
       .where("subcategory.id = :id", { id: subcategoryId })
       .getOne();
 
-    console.log(subcategory, req.files);
     if (!subcategory) {
       return res.status(404).json({ message: "Subcategory not found" });
     }

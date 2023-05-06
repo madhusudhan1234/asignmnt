@@ -46,4 +46,35 @@ export class SubCategoriesController {
       200
     );
   }
+
+  async getDetail(req: Request, res: Response) {
+    const subcategoryId = req.params.id;
+    const subcategoryRepository = AppDataSource.getRepository(SubCategory);
+    const subcategory = await subcategoryRepository
+      .createQueryBuilder("subcategory")
+      .where("subcategory.id = :id", { id: subcategoryId })
+      .getOne();
+    if (!subcategory) {
+      return res.status(404).json({ message: "Subcategory not found" });
+    }
+
+    const subCategory = await AppDataSource.query(`
+      SELECT c.title AS categoryTitle, s.title AS subcategoryTitle, s.description AS description, 
+        json_agg(json_build_object('url', i.url)) AS images 
+      FROM subcategories s 
+      INNER JOIN categories c ON s."categoryId" = c."id"
+      INNER JOIN subcategories_images_images si ON s."id" = si."subcategoryId"
+      INNER JOIN images i ON si."imageId" = i."id"
+      WHERE s.id = '${subcategoryId}'
+      GROUP BY c.title, s.title, s.description
+      LIMIT 1;
+    `);
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully created new category",
+      subCategory,
+      200
+    );
+  }
 }
