@@ -11,7 +11,8 @@ const ImageModal = ({ isOpen, handleImageUpload, handleCloseModal }) => {
   };
 
   const handleFileSelect = (event) => {
-    setSelectedFiles(event.target.files);
+    const files = Array.from(event.target.files);
+    setSelectedFiles(files);
   };
 
   const handleImageSubmit = () => {

@@ -2,8 +2,8 @@ import { LIST_CATEGORIES } from "../constants/api";
 import Api from "./Api";
 
 class CategoryService {
-  async get(params) {
-    const res = await Api.get(LIST_CATEGORIES, params);
+  async get(cached = true) {
+    const res = await Api.get(LIST_CATEGORIES, {}, cached);
 
     return res.body;
   }

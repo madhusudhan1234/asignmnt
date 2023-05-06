@@ -14,6 +14,13 @@ const CategoryCard = ({
   const handleDeleteImage = (subcategoryIndex, imageIndex) => {
     // handle delete image logic here
   };
+
+  const handleButtonClick = (e, subcategory) => {
+    e.preventDefault();
+
+    handleOpenModal(subcategory);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-6 transform transition hover:-translate-y-1 hover:shadow-lg">
       <h2 className="text-lg font-semibold mb-4">{title}</h2>
@@ -34,7 +41,7 @@ const CategoryCard = ({
             </div>
             <p className="text-gray-600">{subcategory.description}</p>
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {subcategory.images.map((image, imageIndex) => (
+              {subcategory?.images?.map((image, imageIndex) => (
                 <div key={imageIndex} className="relative">
                   <button
                     className="absolute top-0 right-0 p-1 rounded-full bg-white shadow-md hover:bg-red-500 hover:text-white focus:outline-none"
@@ -53,7 +60,7 @@ const CategoryCard = ({
               ))}
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                onClick={handleOpenModal}
+                onClick={(e) => handleButtonClick(e, subcategory)}
               >
                 Add Image
               </button>
