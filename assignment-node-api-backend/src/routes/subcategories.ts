@@ -8,5 +8,6 @@ const subCatagoryController = new SubCategoriesController();
 
 router.get("/", ErrorHandler.catchErrors(subCatagoryController.get));
 router.post("/", ErrorHandler.catchErrors(subCatagoryController.create));
+router.get("/:id", ErrorHandler.catchErrors(subCatagoryController.getDetail));
 
 export default router;

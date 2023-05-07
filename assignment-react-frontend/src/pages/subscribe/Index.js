@@ -1,17 +1,51 @@
 import { Switch } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import BreadCrumb from "../../components/BreadCrumb/Index";
 import Footer from "../../components/Footer/Index";
 import Header from "../../components/Header/Index";
+import SubscriberService from "../../services/SubscriberService";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Index() {
+  const [fullName, setFullName] = useState("");
+  const [country, setCountry] = useState("NP");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [message, setMessage] = useState("");
   const [agreed, setAgreed] = useState(false);
+  const [resMessage, setResMessage] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    createSubscriber({
+      name: fullName,
+      email,
+      country,
+      phone: phoneNumber,
+      message,
+    });
+  };
+
+  const createSubscriber = async (params) => {
+    try {
+      const res = await SubscriberService.create(params);
+      setResMessage(res.message);
+
+      setFullName("");
+      setCountry("NP");
+      setEmail("");
+      setPhoneNumber("");
+      setMessage("");
+      setAgreed("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Fragment>
@@ -32,9 +66,13 @@ export default function Index() {
             there are any product updates.
           </p>
         </div>
+        {resMessage && (
+          <p className="text-green-500 font-bold text-center">
+            Successfully Submitted.
+          </p>
+        )}
         <form
-          action="#"
-          method="POST"
+          onSubmit={handleSubmit}
           className="mx-auto mt-16 max-w-xl sm:mt-20"
         >
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
@@ -51,6 +89,8 @@ export default function Index() {
                   name="first-name"
                   id="first-name"
                   autoComplete="given-name"
+                  value={fullName}
+                  onChange={(event) => setFullName(event.target.value)}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -68,6 +108,8 @@ export default function Index() {
                   name="email"
                   id="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -87,22 +129,22 @@ export default function Index() {
                   <select
                     id="country"
                     name="country"
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 pr-9 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+                    value={country}
+                    onChange={(event) => setCountry(event.target.value)}
                   >
-                    <option>US</option>
-                    <option>CA</option>
-                    <option>EU</option>
+                    <option value="NP">Nepal</option>
+                    <option value="CN">China</option>
+                    <option value="IN">India</option>
                   </select>
-                  <ChevronDownIcon
-                    className="pointer-events-none absolute right-3 top-0 h-full w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
                 </div>
                 <input
                   type="tel"
                   name="phone-number"
                   id="phone-number"
                   autoComplete="tel"
+                  value={phoneNumber}
+                  onChange={(event) => setPhoneNumber(event.target.value)}
                   className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -121,6 +163,8 @@ export default function Index() {
                   rows={4}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   defaultValue={""}
+                  value={message}
+                  onChange={(event) => setMessage(event.target.value)}
                 />
               </div>
             </div>
@@ -155,7 +199,8 @@ export default function Index() {
           </div>
           <div className="mt-10">
             <button
-              type="button"
+              type="submit"
+              disabled={!agreed}
               className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Let's Go

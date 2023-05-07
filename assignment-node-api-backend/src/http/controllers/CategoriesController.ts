@@ -4,7 +4,6 @@ import { ResponseUtil } from "../../../utils/Response";
 import { AppDataSource } from "../../database/data-source";
 import { Category } from "../../database/entities/Category";
 import { CategoryDTO } from "../dtos/CategoryDTO";
-const url = require("url");
 
 export class CategoriesController {
   async get(req: Request, res: Response) {

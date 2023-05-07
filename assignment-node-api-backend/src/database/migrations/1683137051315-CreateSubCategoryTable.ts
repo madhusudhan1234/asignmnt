@@ -33,6 +33,18 @@ export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
             name: "categoryId",
             type: "uuid",
           },
+          {
+            name: "createdAt",
+            type: "timestamp",
+            default: "now()",
+            isNullable: true,
+          },
+          {
+            name: "updatedAt",
+            type: "timestamp",
+            default: "now()",
+            isNullable: true,
+          },
         ],
       })
     );

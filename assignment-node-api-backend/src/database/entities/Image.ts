@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { IMAGES } from "../../constants/DBTable";
 import { SubCategory } from "./SubCategory";
 
@@ -15,4 +22,10 @@ export class Image {
 
   @ManyToMany(() => SubCategory, (subcategory) => subcategory.images)
   subcategories: SubCategory[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

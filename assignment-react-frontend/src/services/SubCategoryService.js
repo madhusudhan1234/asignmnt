@@ -1,4 +1,5 @@
-import { LIST_SUBCATEGORIES } from "../constants/api";
+import template from "lodash/fp/template";
+import { LIST_SUBCATEGORIES, SUBCATEGORY_DETAIL } from "../constants/api";
 import Api from "./Api";
 
 class SubCategoryService {
@@ -14,6 +15,12 @@ class SubCategoryService {
       params,
       "application/x-www-form-urlencoded"
     );
+
+    return res.body;
+  }
+
+  async getDetail(subcategoryId) {
+    const res = await Api.get(template(SUBCATEGORY_DETAIL)({ subcategoryId }));
 
     return res.body;
   }

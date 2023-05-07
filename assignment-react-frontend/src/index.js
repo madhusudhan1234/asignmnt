@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     Component: Home,
   },
   {
-    path: "/products/:productid",
+    path: "/products/:subcategoryId",
     Component: Product,
   },
   {
