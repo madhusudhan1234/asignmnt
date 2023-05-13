@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+    environment:
+      - PORT=3001
+      - NODE_ENV=development
