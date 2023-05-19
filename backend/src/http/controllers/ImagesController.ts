@@ -3,7 +3,7 @@ import { ResponseUtil } from "../../../utils/Response";
 import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Image } from "../../database/entities/Image";
-import { ImageSubcategory } from "../../database/entities/ImageSubcategory";
+// import { ImageSubcategory } from "../../database/entities/ImageSubcategory";
 import { SubCategory } from "../../database/entities/SubCategory";
 const url = require("url");
 
@@ -51,8 +51,8 @@ export class ImagesController {
     const subcategoryId = req.body.subcategoryId;
 
     const subcategoryRepository = AppDataSource.getRepository(SubCategory);
-    const imageSubcategoryRepository =
-      AppDataSource.getRepository(ImageSubcategory);
+    // const imageSubcategoryRepository =
+    //   AppDataSource.getRepository(ImageSubcategory);
     const subcategory = await subcategoryRepository
       .createQueryBuilder("subcategory")
       .where("subcategory.id = :id", { id: subcategoryId })
@@ -78,15 +78,15 @@ export class ImagesController {
     );
 
     const savedImages = await imageRepository.save(imageEntities);
-    await Promise.all(
-      savedImages.map(async (image) => {
-        const imageSubcategory = imageSubcategoryRepository.create({
-          imageId: image.id,
-          subcategoryId: subcategoryId,
-        });
-        await imageSubcategoryRepository.save(imageSubcategory);
-      })
-    );
+    // await Promise.all(
+    //   savedImages.map(async (image) => {
+    //     const imageSubcategory = imageSubcategoryRepository.create({
+    //       imageId: image.id,
+    //       subcategoryId: subcategoryId,
+    //     });
+    //     await imageSubcategoryRepository.save(imageSubcategory);
+    //   })
+    // );
 
     return ResponseUtil.sendResponse(
       res,

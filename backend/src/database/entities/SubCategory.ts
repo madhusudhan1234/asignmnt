@@ -3,15 +3,14 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { SUBCATEGORIES } from "../../constants/DBTable";
 import { Category } from "./Category";
-import { Image } from "./Image";
+import { Product } from "./Product";
 
 @Entity(SUBCATEGORIES)
 export class SubCategory {
@@ -31,9 +30,8 @@ export class SubCategory {
   @JoinColumn({ name: "categoryId" })
   category: Category;
 
-  @ManyToMany(() => Image, (image) => image.subcategories)
-  @JoinTable({ name: "subcategories_images_images" })
-  images: Image[];
+  @OneToMany(() => Product, (product) => product.subCategory)
+  products: Product[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -13,8 +13,11 @@ COPY . .
 # Build the application
 RUN yarn build
 
-# Expose port 3000
-EXPOSE 3000
+# Set the environment variable to serve the application on port 3001
+ENV PORT 3001
+
+# Expose port 3001
+EXPOSE 3001
 
 # Start the application
 CMD ["yarn", "start"]

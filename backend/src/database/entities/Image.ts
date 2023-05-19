@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { IMAGES } from "../../constants/DBTable";
-import { SubCategory } from "./SubCategory";
+import { Product } from "./Product";
 
 @Entity(IMAGES)
 export class Image {
@@ -20,8 +20,8 @@ export class Image {
   @Column({ nullable: true })
   url: string;
 
-  @ManyToMany(() => SubCategory, (subcategory) => subcategory.images)
-  subcategories: SubCategory[];
+  @ManyToMany(() => Product, (product) => product.images)
+  products: Product[];
 
   @CreateDateColumn()
   createdAt: Date;
