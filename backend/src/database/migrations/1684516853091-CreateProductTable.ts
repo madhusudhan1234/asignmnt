@@ -4,13 +4,13 @@ import {
   Table,
   TableForeignKey,
 } from "typeorm";
-import { CATEGORIES, SUBCATEGORIES } from "../../constants/DBTable";
+import { PRODUCTS, SUBCATEGORIES } from "../../constants/DBTable";
 
-export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
+export class CreateProductTable1684516853091 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: SUBCATEGORIES,
+        name: PRODUCTS,
         columns: [
           {
             name: "id",
@@ -19,9 +19,14 @@ export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "title",
+            name: "name",
             type: "varchar",
             length: "255",
+            isNullable: false,
+          },
+          {
+            name: "price",
+            type: "varchar",
             isNullable: false,
           },
           {
@@ -30,7 +35,7 @@ export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: "categoryId",
+            name: "subcategoryId",
             type: "uuid",
           },
           {
@@ -50,18 +55,17 @@ export class CreateSubCategoryTable1683137051315 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      SUBCATEGORIES,
+      PRODUCTS,
       new TableForeignKey({
-        columnNames: ["categoryId"],
+        columnNames: ["subcategoryId"],
         referencedColumnNames: ["id"],
-        referencedTableName: CATEGORIES,
+        referencedTableName: SUBCATEGORIES,
         onDelete: "CASCADE",
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // await queryRunner.dropForeignKey(SUBCATEGORIES, "categoryId");
-    await queryRunner.dropTable(SUBCATEGORIES);
+    await queryRunner.dropTable(PRODUCTS);
   }
 }

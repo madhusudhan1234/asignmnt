@@ -1,40 +1,27 @@
 import { validate } from "class-validator";
 import { Request, Response } from "express";
 import { ResponseUtil } from "../../../utils/Response";
+import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Category } from "../../database/entities/Category";
 import { CategoryDTO } from "../dtos/CategoryDTO";
 
 export class CategoriesController {
   async get(req: Request, res: Response) {
-    const categories = await AppDataSource.query(`
-      SELECT
-        c.id AS "categoryId",
-        c.title AS "categoryTitle",
-        json_agg(json_build_object(
-          'id', s.id,
-          'title', s.title,
-          'description', s.description,
-          'images', (
-            SELECT json_agg(json_build_object(
-              'id', i.id,
-              'url', i.url
-            )) FROM images i
-            JOIN subcategories_images_images si ON si."imageId" = i.id
-            WHERE si."subcategoryId" = s.id
-          )
-        )) AS "subcategories"
-      FROM
-        categories c
-        LEFT JOIN subcategories s ON s."categoryId" = c.id
-      GROUP BY
-        c.id
-    `);
+    const builder = await AppDataSource.getRepository(Category)
+      .createQueryBuilder()
+      .orderBy("id", "DESC");
+
+    const { records: categories, paginationInfo } = await Paginator.paginate(
+      builder,
+      req
+    );
 
     return ResponseUtil.sendResponse(
       res,
       "Fetched categories successfully",
-      categories
+      categories,
+      paginationInfo
     );
   }
 
