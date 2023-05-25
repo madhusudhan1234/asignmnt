@@ -28,8 +28,11 @@ export class Product {
   description: string;
 
   @ManyToOne(() => SubCategory, (subCategory) => subCategory.products)
-  @JoinColumn({ name: "productId" })
+  @JoinColumn({ name: "subcategoryId" })
   subCategory: SubCategory;
+
+  @Column({ nullable: false })
+  subcategoryId: string;
 
   @ManyToMany(() => Image, (image) => image.products)
   @JoinTable({ name: "image_product" })

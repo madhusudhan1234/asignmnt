@@ -17,9 +17,6 @@ export class Image {
   @Column({ nullable: true })
   name: string;
 
-  @Column({ nullable: true })
-  url: string;
-
   @ManyToMany(() => Product, (product) => product.images)
   products: Product[];
 

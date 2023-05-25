@@ -3,8 +3,8 @@ import { ResponseUtil } from "../../../utils/Response";
 import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Image } from "../../database/entities/Image";
-// import { ImageSubcategory } from "../../database/entities/ImageSubcategory";
-import { SubCategory } from "../../database/entities/SubCategory";
+import { ImageProduct } from "../../database/entities/ImageProduct";
+import { Product } from "../../database/entities/Product";
 const url = require("url");
 
 export class ImagesController {
@@ -48,18 +48,17 @@ export class ImagesController {
   }
 
   async create(req: Request, res: Response): Promise<Response> {
-    const subcategoryId = req.body.subcategoryId;
+    const productId = req.body.productId;
 
-    const subcategoryRepository = AppDataSource.getRepository(SubCategory);
-    // const imageSubcategoryRepository =
-    //   AppDataSource.getRepository(ImageSubcategory);
-    const subcategory = await subcategoryRepository
-      .createQueryBuilder("subcategory")
-      .where("subcategory.id = :id", { id: subcategoryId })
+    const productRepository = AppDataSource.getRepository(Product);
+    const imageProductRepository = AppDataSource.getRepository(ImageProduct);
+    const product = await productRepository
+      .createQueryBuilder("products")
+      .where("products.id = :id", { id: productId })
       .getOne();
 
-    if (!subcategory) {
-      return res.status(404).json({ message: "Subcategory not found" });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
 
     const images = req.files as Express.Multer.File[];
@@ -73,20 +72,19 @@ export class ImagesController {
     const imageEntities = images.map((image) =>
       imageRepository.create({
         name: image.filename,
-        url: `http://localhost:3000/uploads/images/${image.filename}`,
       })
     );
 
     const savedImages = await imageRepository.save(imageEntities);
-    // await Promise.all(
-    //   savedImages.map(async (image) => {
-    //     const imageSubcategory = imageSubcategoryRepository.create({
-    //       imageId: image.id,
-    //       subcategoryId: subcategoryId,
-    //     });
-    //     await imageSubcategoryRepository.save(imageSubcategory);
-    //   })
-    // );
+    await Promise.all(
+      savedImages.map(async (image) => {
+        const imageSubcategory = imageProductRepository.create({
+          imageId: image.id,
+          productId: productId,
+        });
+        await imageProductRepository.save(imageSubcategory);
+      })
+    );
 
     return ResponseUtil.sendResponse(
       res,
