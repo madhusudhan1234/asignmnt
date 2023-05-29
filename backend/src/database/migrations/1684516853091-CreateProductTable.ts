@@ -37,6 +37,7 @@ export class CreateProductTable1684516853091 implements MigrationInterface {
           {
             name: "subcategoryId",
             type: "uuid",
+            isNullable: false,
           },
           {
             name: "createdAt",
