@@ -19,8 +19,12 @@ class SubCategoryService {
     return res.body;
   }
 
-  async getDetail(subcategoryId) {
-    const res = await Api.get(template(SUBCATEGORY_DETAIL)({ subcategoryId }));
+  async getDetail(subcategoryId, cached = true) {
+    const res = await Api.get(
+      template(SUBCATEGORY_DETAIL)({ subcategoryId }),
+      {},
+      cached
+    );
 
     return res.body;
   }

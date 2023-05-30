@@ -1,6 +1,7 @@
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const user = {
   name: "Tom Cook",
@@ -9,7 +10,11 @@ const user = {
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
 };
 
-const navigation = [{ name: "Dashboard", href: "#", current: true }];
+const navigation = [
+  { name: "Dashboard", href: "/u", current: true },
+  { name: "Subscribers", href: "/u/subscribers", current: false },
+];
+
 const userNavigation = [{ name: "Sign out", href: "#" }];
 
 function classNames(...classes) {
@@ -17,6 +22,15 @@ function classNames(...classes) {
 }
 
 export default function Index() {
+  const location = useLocation();
+  const { pathname } = location;
+
+  // Update the 'current' property based on the current route
+  const updatedNavigation = navigation.map((navItem) => ({
+    ...navItem,
+    current: navItem.href === pathname,
+  }));
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -33,10 +47,10 @@ export default function Index() {
                 </div>
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
-                    {navigation.map((item) => (
-                      <a
+                    {updatedNavigation.map((item) => (
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
@@ -46,7 +60,7 @@ export default function Index() {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

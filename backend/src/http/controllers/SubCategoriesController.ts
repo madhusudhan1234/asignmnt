@@ -50,11 +50,11 @@ export class SubCategoriesController {
   async getDetail(req: Request, res: Response) {
     const subcategoryId = req.params.id;
 
-    const subCategory = await AppDataSource.getRepository(
-      SubCategory
-    ).findOneByOrFail({
-      id: String(subcategoryId),
-    });
+    const subCategory = await AppDataSource.getRepository(SubCategory)
+      .createQueryBuilder("subCategory")
+      .leftJoinAndSelect("subCategory.products", "product")
+      .where("subCategory.id = :id", { id: subcategoryId })
+      .getOneOrFail();
 
     return ResponseUtil.sendResponse(
       res,

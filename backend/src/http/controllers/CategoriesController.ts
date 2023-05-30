@@ -9,8 +9,9 @@ import { CategoryDTO } from "../dtos/CategoryDTO";
 export class CategoriesController {
   async get(req: Request, res: Response) {
     const builder = await AppDataSource.getRepository(Category)
-      .createQueryBuilder()
-      .orderBy("id", "DESC");
+      .createQueryBuilder("category")
+      .leftJoinAndSelect("category.subcategories", "subcategory")
+      .orderBy("category.id", "DESC");
 
     const { records: categories, paginationInfo } = await Paginator.paginate(
       builder,

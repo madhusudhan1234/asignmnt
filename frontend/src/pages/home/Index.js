@@ -50,12 +50,7 @@ export default function Index() {
                           className="bg-white rounded-md shadow-md hover:shadow-lg transition duration-300 block overflow-hidden"
                         >
                           <Link to={"products/" + subcategory.id}>
-                            <div
-                              className="h-0 pb-60 bg-cover bg-center"
-                              style={{
-                                backgroundImage: `url(${subcategory.images[0]["url"]})`,
-                              }}
-                            ></div>
+                            <div className="h-0 pb-60 bg-cover bg-center"></div>
                             <h3 className="text-md font-bold mt-4 px-4 pb-2">
                               {subcategory.title}
                             </h3>
