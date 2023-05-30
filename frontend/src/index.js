@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Dashboard from "./pages/dashboard/Index";
+import SubcategoryDetail from "./pages/dashboard/SubcategoryDetail/Index";
+import Subscribers from "./pages/dashboard/Subscribers/Index";
 import Home from "./pages/home/Index";
 import Login from "./pages/login/Index";
 import Product from "./pages/product/Index";
@@ -12,23 +14,31 @@ import reportWebVitals from "./reportWebVitals";
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: Home,
+    element: <Home />,
   },
   {
     path: "/products/:subcategoryId",
-    Component: Product,
+    element: <Product />,
   },
   {
     path: "/login",
-    Component: Login,
+    element: <Login />,
   },
   {
     path: "/subscribe",
-    Component: Subscribe,
+    element: <Subscribe />,
   },
   {
-    path: "/dashboard",
-    Component: Dashboard,
+    path: "/u",
+    element: <Dashboard />,
+  },
+  {
+    path: "/u/scategory/:subcategoryId",
+    element: <SubcategoryDetail />,
+  },
+  {
+    path: "/u/subscribers",
+    element: <Subscribers />,
   },
 ]);
 
