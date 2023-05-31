@@ -27,8 +27,6 @@ export default function Index() {
       <CreadCrumb items={[{ id: 1, name: "Home" }]} />
       <div className="bg-gray-100">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <h2 className="sr-only">Catalogs</h2>
-
           <div className="bg-gray-100 px-4 pt-4 pb-8 sm:px-8">
             {categories.length &&
               categories.map((category) => (

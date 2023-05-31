@@ -3,15 +3,12 @@ import CategoryCard from "../../components/CategoryCard/Index";
 import CategoryForm from "../../components/CategoryForm/Index";
 import Header from "../../components/Dashboard/Header/Index";
 import PageTitle from "../../components/Dashboard/PageTitle/Index";
-import ImageModal from "../../components/ImageModal/Index";
 import Sidebar from "../../components/Sidebar/Index";
 import CategoryService from "../../services/CategoryService";
-import ImageService from "../../services/ImageService";
 import SubCategoryService from "../../services/SubCategoryService";
 
 export default function Dashboard() {
   const [categories, setCategories] = useState([]);
-  const [selectedSubcategory, setSelectedSubcategory] = useState({});
 
   useEffect(() => {
     fetchCategories();
@@ -24,17 +21,6 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = (subcategory) => {
-    setIsModalOpen(true);
-    setSelectedSubcategory(subcategory);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
   };
 
   const handleCategorySubmit = async (title) => {
@@ -60,31 +46,8 @@ export default function Dashboard() {
     }
   };
 
-  const handleImageUpload = async (uploadedFiles) => {
-    const formData = new FormData();
-
-    formData.append("subcategoryId", selectedSubcategory.id);
-    for (let i = 0; i < uploadedFiles.length; i++) {
-      formData.append("image", uploadedFiles[i]);
-    }
-    console.log(uploadedFiles);
-
-    try {
-      await ImageService.create(formData);
-
-      fetchCategories(false);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <>
-      <ImageModal
-        isOpen={isModalOpen}
-        handleImageUpload={handleImageUpload}
-        handleCloseModal={handleCloseModal}
-      />
       <div className="min-h-full">
         <Header />
         <PageTitle title="Dashboard" />

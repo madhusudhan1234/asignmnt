@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Dashboard from "./pages/dashboard/Index";
+import ProductDetail from "./pages/dashboard/ProductDetail/Index";
 import SubcategoryDetail from "./pages/dashboard/SubcategoryDetail/Index";
 import Subscribers from "./pages/dashboard/Subscribers/Index";
 import Home from "./pages/home/Index";
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/u/subscribers",
     element: <Subscribers />,
+  },
+  {
+    path: "/u/products/:productId",
+    element: <ProductDetail />,
   },
 ]);
 

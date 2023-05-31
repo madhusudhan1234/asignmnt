@@ -1,9 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const ProductCard = ({ name, price, description }) => {
+const ProductCard = ({ name, price, description, id }) => {
   return (
     <div className="bg-white shadow rounded-lg p-4 mb-4">
-      <h3 className="text-lg font-semibold mb-2">{name}</h3>
+      <h3 className="text-lg font-semibold mb-2">
+        <Link to={`/u/products/${id}`}>{name}</Link>
+      </h3>
       <p className="text-gray-600 mb-2">Price: {price}</p>
       <p className="text-gray-600">{description}</p>
     </div>
