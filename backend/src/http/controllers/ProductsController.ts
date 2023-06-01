@@ -32,6 +32,7 @@ export class ProductsController {
     const product = await AppDataSource.getRepository(Product)
       .createQueryBuilder("product")
       .leftJoinAndSelect("product.images", "image")
+      .leftJoinAndSelect("product.subCategory", "subcategory")
       .where("product.id = :id", { id: productId })
       .getOneOrFail();
 

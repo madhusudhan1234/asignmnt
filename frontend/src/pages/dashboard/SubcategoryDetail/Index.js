@@ -70,7 +70,10 @@ export default function Index() {
                 </p>
               </div>
               <ProductForm handleCreateProduct={createProduct} />
-              <ProductListing products={subcategory.products} />
+              <ProductListing
+                products={subcategory.products}
+                linkType="private"
+              />
             </div>
           </div>
         </main>

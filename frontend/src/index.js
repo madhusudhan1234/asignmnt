@@ -9,6 +9,7 @@ import Subscribers from "./pages/dashboard/Subscribers/Index";
 import Home from "./pages/home/Index";
 import Login from "./pages/login/Index";
 import Product from "./pages/product/Index";
+import FrontSubCategory from "./pages/subcategory/Index";
 import Subscribe from "./pages/subscribe/Index";
 import reportWebVitals from "./reportWebVitals";
 
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "/products/:subcategoryId",
+    path: "/products/:productId",
     element: <Product />,
   },
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/u/products/:productId",
     element: <ProductDetail />,
+  },
+  {
+    path: "/category/:subcategoryId",
+    element: <FrontSubCategory />,
   },
 ]);
 
