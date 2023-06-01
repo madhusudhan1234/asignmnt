@@ -34,8 +34,22 @@ export class Product {
   @Column({ nullable: false })
   subcategoryId: string;
 
+  // @ManyToMany(() => Image)
+  // @JoinTable({ name: "product_image" })
+  // images: Image[];
+
   @ManyToMany(() => Image, (image) => image.products)
-  @JoinTable({ name: "image_product" })
+  @JoinTable({
+    name: "product_image",
+    joinColumn: {
+      name: "productId",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "imageId",
+      referencedColumnName: "id",
+    },
+  })
   images: Image[];
 
   @CreateDateColumn()

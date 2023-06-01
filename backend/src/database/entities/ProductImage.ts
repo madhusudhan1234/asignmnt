@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { IMAGE_PRODUCT } from "../../constants/DBTable";
 
 @Entity(IMAGE_PRODUCT)
-export class ImageProduct {
+export class ProductImage {
   @PrimaryGeneratedColumn()
   id: number;
 

@@ -3,8 +3,8 @@ import { ResponseUtil } from "../../../utils/Response";
 import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Image } from "../../database/entities/Image";
-import { ImageProduct } from "../../database/entities/ImageProduct";
 import { Product } from "../../database/entities/Product";
+import { ProductImage } from "../../database/entities/ProductImage";
 const url = require("url");
 
 export class ImagesController {
@@ -51,7 +51,7 @@ export class ImagesController {
     const productId = req.body.productId;
 
     const productRepository = AppDataSource.getRepository(Product);
-    const imageProductRepository = AppDataSource.getRepository(ImageProduct);
+    const imageProductRepository = AppDataSource.getRepository(ProductImage);
     const product = await productRepository
       .createQueryBuilder("products")
       .where("products.id = :id", { id: productId })

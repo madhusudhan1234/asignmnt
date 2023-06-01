@@ -5,6 +5,7 @@ import { Paginator } from "../../database/Paginator";
 import { AppDataSource } from "../../database/data-source";
 import { Product } from "../../database/entities/Product";
 import { ProductDTO } from "../dtos/ProductDTO";
+const url = require("url");
 
 export class ProductsController {
   async get(req: Request, res: Response) {
@@ -25,6 +26,42 @@ export class ProductsController {
     );
   }
 
+  async show(req: Request, res: Response): Promise<Response> {
+    const productId = req.params.id;
+
+    const product = await AppDataSource.getRepository(Product)
+      .createQueryBuilder("product")
+      .leftJoinAndSelect("product.images", "image")
+      .where("product.id = :id", { id: productId })
+      .getOneOrFail();
+
+    const imagesWithFullUrls = product?.images?.map((image) => {
+      const fullUrl = url.format({
+        protocol: req.protocol,
+        host: req.get("host"),
+        pathname: `/uploads/images/${image.name}`,
+      });
+
+      return {
+        ...image,
+        image: fullUrl,
+      };
+    });
+
+    product.images = imagesWithFullUrls;
+
+    if (!product) {
+      throw new Error("Product not found");
+    }
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully created new category",
+      product,
+      200
+    );
+  }
+
   async create(req: Request, res: Response): Promise<Response> {
     const productData = req.body;
 
@@ -38,7 +75,6 @@ export class ProductsController {
 
     const repo = AppDataSource.getRepository(Product);
     const product = repo.create(productData);
-    console.log(productData);
 
     await repo.save(product);
 

@@ -58,7 +58,7 @@ export class SubCategoriesController {
 
     return ResponseUtil.sendResponse(
       res,
-      "Successfully created new category",
+      "Successfully fetched category",
       subCategory,
       200
     );
