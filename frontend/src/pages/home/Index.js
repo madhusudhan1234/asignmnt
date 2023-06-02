@@ -26,33 +26,32 @@ export default function Index() {
       <Header />
       <CreadCrumb items={[{ id: 1, name: "Home" }]} />
       <div className="bg-gray-100">
-        <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-          <div className="bg-gray-100 px-4 pt-4 pb-8 sm:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between sm:p-6 p-2">
+          <div className="bg-gray-100">
             {categories.length &&
               categories.map((category) => (
                 <div
-                  className="bg-gray-100 px-4 pt-4 pb-8 sm:px-8"
-                  key={category.categoryId}
+                  className="bg-gray-100 px-4 pb-8 sm:px-8"
+                  key={category.id}
                 >
                   <div
-                    className="bg-white p-4 rounded-t-md shadow-lg mb-4 relative"
+                    className="bg-white p-4 rounded-t-md shadow-lg relative"
                     style={{ backgroundColor: "rgba(255, 255, 255, 0.9)" }}
                   >
-                    <h2 className="text-xl font-bold mb-4">
-                      {category.categoryTitle}
+                    <h2 className="text-4xl font-bold mb-4">
+                      {category.title}
                     </h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                       {category?.subcategories?.map((subcategory) => (
-                        <div
-                          key={subcategory.id}
-                          className="bg-white rounded-md shadow-md hover:shadow-lg transition duration-300 block overflow-hidden"
-                        >
-                          <Link to={"products/" + subcategory.id}>
-                            <div className="h-0 pb-60 bg-cover bg-center"></div>
-                            <h3 className="text-md font-bold mt-4 px-4 pb-2">
+                        <div className="text-center" key={subcategory.id}>
+                          <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                            <Link to={`/category/${subcategory.id}`}>
                               {subcategory.title}
-                            </h3>
-                          </Link>
+                            </Link>
+                          </h1>
+                          <p className="mt-6 text-lg leading-8 text-gray-600">
+                            {subcategory.description}
+                          </p>
                         </div>
                       ))}
                     </div>

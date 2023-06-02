@@ -25,7 +25,6 @@ export class SubCategoriesController {
 
   async create(req: Request, res: Response): Promise<Response> {
     const subCategoryData = req.body;
-    console.log(subCategoryData);
     const dto = new SubCategoryDTO();
     Object.assign(dto, subCategoryData);
 
@@ -53,6 +52,7 @@ export class SubCategoriesController {
     const subCategory = await AppDataSource.getRepository(SubCategory)
       .createQueryBuilder("subCategory")
       .leftJoinAndSelect("subCategory.products", "product")
+      .leftJoinAndSelect("subCategory.category", "category")
       .where("subCategory.id = :id", { id: subcategoryId })
       .getOneOrFail();
 

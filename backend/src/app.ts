@@ -4,6 +4,7 @@ const path = require("path");
 import bodyParser from "body-parser";
 import cors from "cors";
 import { ErrorHandler } from "./http/middlewares/ErrorHandler";
+import authRoute from "./routes/auth";
 import categoryRoute from "./routes/categories";
 import imagesRoute from "./routes/images";
 import productRoute from "./routes/products";
@@ -27,6 +28,7 @@ app.use("/categories", categoryRoute);
 app.use("/subcategories", subCategoryRoute);
 app.use("/subscribers", subscriberRoute);
 app.use("/products", productRoute);
+app.use("/auth", authRoute);
 app.use("*", (req: Request, res: Response) => {
   return res.status(404).json({
     success: false,
