@@ -15,7 +15,7 @@ const navigation = [
   { name: "Subscribers", href: "/u/subscribers", current: false },
 ];
 
-const userNavigation = [{ name: "Sign out", href: "#" }];
+const userNavigation = [{ name: "Sign out", href: "/" }];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");

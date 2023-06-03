@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Dashboard/Header/Index";
 import PageTitle from "../../../components/Dashboard/PageTitle/Index";
 import Sidebar from "../../../components/Sidebar/Index";
+import AuthService from "../../../services/AuthService";
 import CategoryService from "../../../services/CategoryService";
 import SubscriberService from "../../../services/SubscriberService";
 
 export default function Index() {
   const [subscribers, setSubscribers] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   useEffect(() => {
     fetchSubscribers();
     fetchCategories();
   }, []);
+
+  const fetchMe = async () => {
+    try {
+      await AuthService.get();
+    } catch (error) {
+      if (error.status === 401) {
+        setIsLoggedIn(false);
+      }
+      console.error(error);
+    }
+  };
 
   const fetchSubscribers = async () => {
     try {
@@ -31,6 +51,10 @@ export default function Index() {
       console.log(error);
     }
   };
+
+  if (!isLoggedIn) {
+    return navigate("/lol");
+  }
 
   return (
     <>

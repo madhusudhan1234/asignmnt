@@ -1,30 +1,64 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { BHANJA_USER_TOKEN } from "../../constants";
+import AuthService from "../../services/AuthService";
+import { saveState } from "../../utils/localStorage";
+
 export default function Index() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMe();
+    if (isLoggedIn) {
+      return navigate("/u");
+    }
+  }, [isLoggedIn]);
+
+  const fetchMe = async () => {
+    try {
+      const userData = await AuthService.get();
+      if (userData) {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await AuthService.login({ email, password });
+      saveState(BHANJA_USER_TOKEN, res.data.accessToken);
+      fetchMe();
+      setEmail("");
+      setPassword("");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
       <div className="h-full bg-white">
         <div className="h-full">
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              <img
-                className="mx-auto h-10 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company"
-              />
+              <h1 className="text-3xl text-center">
+                <Link to="/">Bhanja</Link>
+              </h1>
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Sign in to your account
               </h2>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" action="#" method="POST">
+              <form className="space-y-6" onSubmit={handleSubmit}>
                 <div>
                   <label
                     htmlFor="email"
@@ -39,6 +73,8 @@ export default function Index() {
                       type="email"
                       autoComplete="email"
                       required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
@@ -60,6 +96,8 @@ export default function Index() {
                       type="password"
                       autoComplete="current-password"
                       required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>

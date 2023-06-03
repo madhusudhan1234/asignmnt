@@ -5,3 +5,5 @@ export const SUBCATEGORY_DETAIL = "/subcategories/${subcategoryId}";
 export const LIST_SUBSCRIBERS = "/subscribers";
 export const LIST_PRODUCTS = "/products";
 export const PRODUCT_DETAIL = "/products/${productId}";
+export const DETAIL_ME = "/auth/me";
+export const LOGIN = "/auth/login";

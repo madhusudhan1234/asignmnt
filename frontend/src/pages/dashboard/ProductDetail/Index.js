@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../components/Dashboard/Header/Index";
 import ImageListing from "../../../components/Dashboard/ImageListing/Index";
 import PageTitle from "../../../components/Dashboard/PageTitle/Index";
 import ImageModal from "../../../components/ImageModal/Index";
 import Sidebar from "../../../components/Sidebar/Index";
+import AuthService from "../../../services/AuthService";
 import CategoryService from "../../../services/CategoryService";
 import ImageService from "../../../services/ImageService";
 import ProductService from "../../../services/ProductService";
@@ -14,11 +15,29 @@ export default function Index() {
   const [categories, setCategories] = useState([]);
   const [product, setProduct] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   useEffect(() => {
     fetchProductDetail();
     fetchCategories();
   }, [productId]);
+
+  const fetchMe = async () => {
+    try {
+      await AuthService.get();
+    } catch (error) {
+      if (error.status === 401) {
+        setIsLoggedIn(false);
+      }
+      console.error(error);
+    }
+  };
 
   const fetchProductDetail = async (cached = true) => {
     try {
@@ -63,6 +82,10 @@ export default function Index() {
       console.error(error);
     }
   };
+
+  if (!isLoggedIn) {
+    return navigate("/lol");
+  }
 
   return (
     <>

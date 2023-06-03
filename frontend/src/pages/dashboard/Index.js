@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CategoryCard from "../../components/CategoryCard/Index";
 import CategoryForm from "../../components/CategoryForm/Index";
 import Header from "../../components/Dashboard/Header/Index";
 import PageTitle from "../../components/Dashboard/PageTitle/Index";
 import Sidebar from "../../components/Sidebar/Index";
+import AuthService from "../../services/AuthService";
 import CategoryService from "../../services/CategoryService";
 import SubCategoryService from "../../services/SubCategoryService";
 
 export default function Dashboard() {
   const [categories, setCategories] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const fetchMe = async () => {
+    try {
+      await AuthService.get();
+    } catch (error) {
+      if (error.status === 401) {
+        setIsLoggedIn(false);
+      }
+      console.error(error);
+    }
+  };
 
   const fetchCategories = async (cached = true) => {
     try {
@@ -45,6 +65,10 @@ export default function Dashboard() {
       console.error(error);
     }
   };
+
+  if (!isLoggedIn) {
+    return navigate("/lol");
+  }
 
   return (
     <>
