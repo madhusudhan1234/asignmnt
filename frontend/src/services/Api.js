@@ -4,12 +4,12 @@ const cache = [];
 const BASE_URL = process.env.REACT_APP_API_ENDPOINT;
 
 class Api {
-  async get(resource, params = {}, cacheEnable = true) {
+  async get(resource, params = {}, cacheEnable = true, token = null) {
     const config = {
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
-      params: params,
     };
 
     try {
@@ -29,10 +29,16 @@ class Api {
     }
   }
 
-  async post(resource, params = {}, contentType = "multipart/form-data") {
-    let config = {
+  async post(
+    resource,
+    params = {},
+    contentType = "multipart/form-data",
+    token = null
+  ) {
+    const config = {
       headers: {
         "Content-Type": contentType,
+        ...(token && { Authorization: `Bearer ${token}` }),
       },
     };
 

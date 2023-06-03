@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../../components/Dashboard/Header/Index";
 import PageTitle from "../../../components/Dashboard/PageTitle/Index";
 import ProductForm from "../../../components/Dashboard/ProductForm/Index";
 import ProductListing from "../../../components/Dashboard/ProductListing/Index";
 import Sidebar from "../../../components/Sidebar/Index";
+import AuthService from "../../../services/AuthService";
 import CategoryService from "../../../services/CategoryService";
 import ProductService from "../../../services/ProductService";
 import SubCategoryService from "../../../services/SubCategoryService";
@@ -13,11 +14,29 @@ export default function Index() {
   const { subcategoryId } = useParams();
   const [categories, setCategories] = useState([]);
   const [subcategory, setSubcaterogy] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    fetchMe();
+  }, []);
 
   useEffect(() => {
     fetchSubcategoryDetail();
     fetchCategories();
   }, [subcategoryId]);
+
+  const fetchMe = async () => {
+    try {
+      await AuthService.get();
+    } catch (error) {
+      if (error.status === 401) {
+        setIsLoggedIn(false);
+      }
+      console.error(error);
+    }
+  };
 
   const fetchSubcategoryDetail = async (cached = true) => {
     try {
@@ -47,6 +66,10 @@ export default function Index() {
       console.error(error);
     }
   };
+
+  if (!isLoggedIn) {
+    return navigate("/lol");
+  }
 
   return (
     <>
