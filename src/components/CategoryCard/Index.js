@@ -1,4 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 import CreateSubcategory from "../CreateSubcategory/Index";
 
 const CategoryCard = ({
@@ -35,7 +36,10 @@ const CategoryCard = ({
           >
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-lg font-small">
-                {subcategoryIndex + 1}. {subcategory.title}
+                {subcategoryIndex + 1}.{" "}
+                <Link to={`/u/scategory/${subcategory.id}`}>
+                  {subcategory.title}
+                </Link>
               </h4>
               <button
                 className="text-gray-500 hover:text-red-500"
