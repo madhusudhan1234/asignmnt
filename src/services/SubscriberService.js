@@ -1,9 +1,16 @@
+import { BHANJA_USER_TOKEN } from "../constants";
 import { LIST_SUBSCRIBERS } from "../constants/api";
+import { loadState } from "../utils/localStorage";
 import Api from "./Api";
 
 class SubscriberService {
   async get() {
-    const res = await Api.get(LIST_SUBSCRIBERS);
+    const res = await Api.get(
+      LIST_SUBSCRIBERS,
+      {},
+      true,
+      loadState(BHANJA_USER_TOKEN)
+    );
 
     return res.body;
   }
