@@ -1,4 +1,6 @@
+import { BHANJA_USER_TOKEN } from "../constants";
 import { LIST_IMAGES } from "../constants/api";
+import { loadState } from "../utils/localStorage";
 import Api from "./Api";
 
 class ImageService {
@@ -9,7 +11,12 @@ class ImageService {
   }
 
   async create(formData) {
-    const res = await Api.post(LIST_IMAGES, formData);
+    const res = await Api.post(
+      LIST_IMAGES,
+      formData,
+      "multipart/form-data",
+      loadState(BHANJA_USER_TOKEN)
+    );
 
     return res.body;
   }
