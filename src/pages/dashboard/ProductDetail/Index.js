@@ -72,7 +72,6 @@ export default function Index() {
     for (let i = 0; i < uploadedFiles.length; i++) {
       formData.append("image", uploadedFiles[i]);
     }
-    console.log(uploadedFiles);
 
     try {
       await ImageService.create(formData);
