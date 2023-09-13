@@ -15,7 +15,7 @@ export default function Index() {
         >
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 text-2xl">
-              Bhanja
+              Image Catalog
             </Link>
           </div>
           <div className="flex lg:hidden">
