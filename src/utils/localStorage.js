@@ -1,6 +1,6 @@
-import { BHANJA_USER_TOKEN } from "../constants";
+import { CATALOG_USER_TOKEN } from "../constants";
 
-const loadState = (key = BHANJA_USER_TOKEN) => {
+const loadState = (key = CATALOG_USER_TOKEN) => {
   try {
     const serializedState = localStorage.getItem(key);
     if (serializedState === null) {
@@ -12,7 +12,7 @@ const loadState = (key = BHANJA_USER_TOKEN) => {
   }
 };
 
-const saveState = (key = BHANJA_USER_TOKEN, state) => {
+const saveState = (key = CATALOG_USER_TOKEN, state) => {
   try {
     const serializedState = JSON.stringify(state);
     localStorage.setItem(key, serializedState);
@@ -21,7 +21,7 @@ const saveState = (key = BHANJA_USER_TOKEN, state) => {
   }
 };
 
-const removeState = (key = BHANJA_USER_TOKEN) => {
+const removeState = (key = CATALOG_USER_TOKEN) => {
   try {
     localStorage.removeItem(key);
   } catch (error) {
@@ -29,4 +29,4 @@ const removeState = (key = BHANJA_USER_TOKEN) => {
   }
 };
 
-export { loadState, saveState, removeState };
+export { loadState, removeState, saveState };
