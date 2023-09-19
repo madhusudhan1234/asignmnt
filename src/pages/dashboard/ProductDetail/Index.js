@@ -4,9 +4,7 @@ import Header from "../../../components/Dashboard/Header/Index";
 import ImageListing from "../../../components/Dashboard/ImageListing/Index";
 import PageTitle from "../../../components/Dashboard/PageTitle/Index";
 import ImageModal from "../../../components/ImageModal/Index";
-import Sidebar from "../../../components/Sidebar/Index";
 import AuthService from "../../../services/AuthService";
-import CategoryService from "../../../services/CategoryService";
 import ImageService from "../../../services/ImageService";
 import ProductService from "../../../services/ProductService";
 
@@ -25,7 +23,6 @@ export default function Index() {
 
   useEffect(() => {
     fetchProductDetail();
-    fetchCategories();
   }, [productId]);
 
   const fetchMe = async () => {
@@ -54,15 +51,6 @@ export default function Index() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  };
-
-  const fetchCategories = async (cached = true) => {
-    try {
-      const res = await CategoryService.get(cached);
-      setCategories(res.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleImageUpload = async (uploadedFiles) => {
@@ -98,11 +86,6 @@ export default function Index() {
         <PageTitle title="Product" />
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4">
-            <div className="col-span-1">
-              {categories && categories.length > 1 && (
-                <Sidebar categories={categories} />
-              )}
-            </div>
             <div className="col-span-3">
               <div class="text-center">
                 <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-6xl">

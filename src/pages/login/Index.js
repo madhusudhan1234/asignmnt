@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { BHANJA_USER_TOKEN } from "../../constants";
+import { CATALOG_USER_TOKEN } from "../../constants";
 import AuthService from "../../services/AuthService";
 import { saveState } from "../../utils/localStorage";
 
@@ -34,7 +34,7 @@ export default function Index() {
 
     try {
       const res = await AuthService.login({ email, password });
-      saveState(BHANJA_USER_TOKEN, res.data.accessToken);
+      saveState(CATALOG_USER_TOKEN, res.data.accessToken);
       fetchMe();
       setEmail("");
       setPassword("");

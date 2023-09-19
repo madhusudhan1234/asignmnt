@@ -1,4 +1,4 @@
-import { BHANJA_USER_TOKEN } from "../constants";
+import { CATALOG_USER_TOKEN } from "../constants";
 import { DETAIL_ME, LOGIN } from "../constants/api";
 import { loadState } from "../utils/localStorage";
 import Api from "./Api";
@@ -9,7 +9,7 @@ class AuthService {
       DETAIL_ME,
       {},
       false,
-      loadState(BHANJA_USER_TOKEN)
+      loadState(CATALOG_USER_TOKEN)
     );
 
     return res.body;

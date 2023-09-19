@@ -1,4 +1,4 @@
-import { BHANJA_USER_TOKEN } from "../constants";
+import { CATALOG_USER_TOKEN } from "../constants";
 import { LIST_IMAGES } from "../constants/api";
 import { loadState } from "../utils/localStorage";
 import Api from "./Api";
@@ -15,7 +15,7 @@ class ImageService {
       LIST_IMAGES,
       formData,
       "multipart/form-data",
-      loadState(BHANJA_USER_TOKEN)
+      loadState(CATALOG_USER_TOKEN)
     );
 
     return res.body;

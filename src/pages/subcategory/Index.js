@@ -4,20 +4,20 @@ import BreadCrumb from "../../components/BreadCrumb/Index";
 import ProductListing from "../../components/Dashboard/ProductListing/Index";
 import Footer from "../../components/Footer/Index";
 import Header from "../../components/Header/Index";
-import SubCategoryService from "../../services/SubCategoryService";
+import CollectionService from "../../services/CollectionService";
 
 export default function Index() {
-  const { subcategoryId } = useParams();
-  const [subcategory, setSubcaterogy] = useState({});
+  const { collectionId } = useParams();
+  const [collection, setCollection] = useState({});
 
   useEffect(() => {
-    fetchSubcategoryDetail();
-  }, [subcategoryId]);
+    fetchCollectionDetail();
+  }, [collectionId]);
 
-  const fetchSubcategoryDetail = async (cached = true) => {
+  const fetchCollectionDetail = async (cached = true) => {
     try {
-      const res = await SubCategoryService.getDetail(subcategoryId, cached);
-      setSubcaterogy(res.data);
+      const res = await CollectionService.getDetail(collectionId, cached);
+      setCollection(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -29,8 +29,7 @@ export default function Index() {
       <BreadCrumb
         items={[
           { id: 1, name: "Home" },
-          { id: 2, name: subcategory?.category?.title },
-          { id: 2, name: subcategory.title },
+          { id: 2, name: collection.title },
         ]}
       />
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -38,13 +37,13 @@ export default function Index() {
           <div className="col-span-4">
             <div class="text-center">
               <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                {subcategory.title}
+                {collection.title}
               </h1>
               <p class="mt-6 text-lg leading-8 text-gray-600">
-                {subcategory.description}
+                {collection.description}
               </p>
             </div>
-            <ProductListing products={subcategory.products} linkType="public" />
+            <ProductListing products={collection.products} linkType="public" />
           </div>
         </div>
       </main>

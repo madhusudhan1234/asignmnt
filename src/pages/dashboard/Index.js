@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CategoryCard from "../../components/CategoryCard/Index";
-import CategoryForm from "../../components/CategoryForm/Index";
 import Header from "../../components/Dashboard/Header/Index";
 import PageTitle from "../../components/Dashboard/PageTitle/Index";
-import Sidebar from "../../components/Sidebar/Index";
 import AuthService from "../../services/AuthService";
-import CategoryService from "../../services/CategoryService";
-import SubCategoryService from "../../services/SubCategoryService";
+import CollectionService from "../../services/CollectionService";
 
 export default function Dashboard() {
-  const [categories, setCategories] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
 
   let navigate = useNavigate();
@@ -20,7 +17,7 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetchCategories();
+    fetchCollections();
   }, []);
 
   const fetchMe = async () => {
@@ -34,33 +31,23 @@ export default function Dashboard() {
     }
   };
 
-  const fetchCategories = async (cached = true) => {
+  const fetchCollections = async (cached = true) => {
     try {
-      const res = await CategoryService.get(cached);
-      setCategories(res.data);
+      const res = await CollectionService.get(cached);
+      setCollections(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleCategorySubmit = async (title) => {
+  const handleCreateCollection = async (title, description) => {
     try {
-      await CategoryService.create(title);
-      fetchCategories(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleCreateSubCategory = async (categoryId, title, description) => {
-    try {
-      await SubCategoryService.create({
-        categoryId,
+      await CollectionService.create({
         title,
         description,
       });
 
-      fetchCategories(false);
+      fetchCollections(false);
     } catch (error) {
       console.error(error);
     }
@@ -77,26 +64,19 @@ export default function Dashboard() {
         <PageTitle title="Dashboard" />
         <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4">
-            <div className="col-span-1">
+            {/* <div className="col-span-1">
               {categories && categories.length > 1 && (
                 <Sidebar categories={categories} />
               )}
-            </div>
+            </div> */}
             <div className="col-span-3">
-              <CategoryForm onSubmit={handleCategorySubmit} />
               <div className="mt-5 text-sm text-gray-600">
-                {categories &&
-                  categories.length &&
-                  categories.map((category, index) => (
-                    <CategoryCard
-                      title={category.title}
-                      index={index}
-                      subcategories={category.subcategories}
-                      handleCreateSubCategory={(title, description) =>
-                        handleCreateSubCategory(category.id, title, description)
-                      }
-                    />
-                  ))}
+                <CategoryCard
+                  collections={collections}
+                  handleCreateCollection={(title, description) =>
+                    handleCreateCollection(title, description)
+                  }
+                />
               </div>
             </div>
           </div>

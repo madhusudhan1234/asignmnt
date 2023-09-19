@@ -4,7 +4,6 @@ import Header from "../../../components/Dashboard/Header/Index";
 import PageTitle from "../../../components/Dashboard/PageTitle/Index";
 import Sidebar from "../../../components/Sidebar/Index";
 import AuthService from "../../../services/AuthService";
-import CategoryService from "../../../services/CategoryService";
 import SubscriberService from "../../../services/SubscriberService";
 
 export default function Index() {
@@ -20,7 +19,6 @@ export default function Index() {
 
   useEffect(() => {
     fetchSubscribers();
-    fetchCategories();
   }, []);
 
   const fetchMe = async () => {
@@ -40,15 +38,6 @@ export default function Index() {
       setSubscribers(res.data);
     } catch (error) {
       console.error(error);
-    }
-  };
-
-  const fetchCategories = async (cached = true) => {
-    try {
-      const res = await CategoryService.get(cached);
-      setCategories(res.data);
-    } catch (error) {
-      console.log(error);
     }
   };
 

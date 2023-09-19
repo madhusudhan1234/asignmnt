@@ -1,1 +1,1 @@
-export const BHANJA_USER_TOKEN = "bhanja_user_token";
+export const CATALOG_USER_TOKEN = "catalog_user_token";

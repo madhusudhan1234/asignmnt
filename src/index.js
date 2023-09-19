@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: "/u/scategory/:subcategoryId",
+    path: "/u/collections/:collectionId",
     element: <SubcategoryDetail />,
   },
   {
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
     element: <ProductDetail />,
   },
   {
-    path: "/category/:subcategoryId",
+    path: "/category/:collectionId",
     element: <FrontSubCategory />,
   },
 ]);
