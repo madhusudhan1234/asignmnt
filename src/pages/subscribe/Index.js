@@ -12,12 +12,10 @@ function classNames(...classes) {
 
 export default function Index() {
   const [fullName, setFullName] = useState("");
-  const [country, setCountry] = useState("NP");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [message, setMessage] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [resMessage, setResMessage] = useState("");
+  const [serverError, setServerError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,9 +23,6 @@ export default function Index() {
     createSubscriber({
       name: fullName,
       email,
-      country,
-      phone: phoneNumber,
-      message,
     });
   };
 
@@ -37,12 +32,12 @@ export default function Index() {
       setResMessage(res.message);
 
       setFullName("");
-      setCountry("NP");
       setEmail("");
-      setPhoneNumber("");
-      setMessage("");
       setAgreed("");
+
+      setServerError("");
     } catch (error) {
+      setServerError("Something went wrong! please try again later!");
       console.error(error);
     }
   };
@@ -70,6 +65,9 @@ export default function Index() {
           <p className="text-green-500 font-bold text-center">
             Successfully Submitted.
           </p>
+        )}
+        {serverError && (
+          <p className="text-red-500 font-bold text-center">{serverError}</p>
         )}
         <form
           onSubmit={handleSubmit}
@@ -111,60 +109,6 @@ export default function Index() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="phone-number"
-                className="block text-sm font-semibold leading-6 text-gray-900"
-              >
-                Phone number
-              </label>
-              <div className="relative mt-2.5">
-                <div className="absolute inset-y-0 left-0 flex items-center">
-                  <label htmlFor="country" className="sr-only">
-                    Country
-                  </label>
-                  <select
-                    id="country"
-                    name="country"
-                    className="h-full rounded-md border-0 bg-transparent bg-none py-0 pl-4 text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-                    value={country}
-                    onChange={(event) => setCountry(event.target.value)}
-                  >
-                    <option value="NP">Nepal</option>
-                    <option value="CN">China</option>
-                    <option value="IN">India</option>
-                  </select>
-                </div>
-                <input
-                  type="tel"
-                  name="phone-number"
-                  id="phone-number"
-                  autoComplete="tel"
-                  value={phoneNumber}
-                  onChange={(event) => setPhoneNumber(event.target.value)}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div className="sm:col-span-2">
-              <label
-                htmlFor="message"
-                className="block text-sm font-semibold leading-6 text-gray-900"
-              >
-                Message
-              </label>
-              <div className="mt-2.5">
-                <textarea
-                  name="message"
-                  id="message"
-                  rows={4}
-                  className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  defaultValue={""}
-                  value={message}
-                  onChange={(event) => setMessage(event.target.value)}
                 />
               </div>
             </div>
